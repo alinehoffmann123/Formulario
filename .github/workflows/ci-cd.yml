@@ -1,0 +1,43 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v3
+
+      - name: Configurar ambiente
+        run: |
+          echo "Instalando dependências..."
+          # Comando para instalar dependências (exemplo para Python)
+          python -m pip install --upgrade pip
+
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v3
+
+      - name: Rodar testes automatizados
+        run: |
+          echo "Executando testes..."
+          # Comando para rodar testes (exemplo para Python)
+          pytest || echo "Testes falharam!"
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Simulação de Deploy
+        run: echo "Simulando deploy para produção!"
